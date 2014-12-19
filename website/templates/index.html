@@ -8,24 +8,43 @@
 </head>
 <body class="container-fluid">
 <div class="container">
-  <form role="form" style="width:400px; margin:0 auto;">
+  <form role="form" id="formSign" action="{{ url_for('signPetition')}}" method='POST' style="width:400px; margin:0 auto;">
     <h1>I sign the petition.</h1>
 
     <div class="required-field-block">
-      <input type="text" placeholder="Name" class="form-control" />
+      <input type="text" id="form-name" placeholder="Name" name="name" class="form-control" />
       <div class="required-icon">
         <div class="text">*</div>
       </div>
     </div>
 
     <div class="required-field-block">
-      <input type="text" placeholder="Email" class="form-control" />
+      <input type="text" id="form-email" placeholder="Email" name="email" class="form-control" />
       <div class="required-icon">
         <div class="text">*</div>
       </div>
     </div>
-    <button class="btn btn-primary">Sign</button>
+    <button id="sign-button" data-loading-text="Signing petition..." autocomplete="off" aria-pressed="false" class="btn btn-primary">Sign</button>
+  </form>
+  <div class="alert alert-success alert-dismissible hidden fade in" id="alert-success" role="alert">
+    <button type="button" class="close" data-dimiss="alert">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <span>You've successfully signed the petition.</span>
+  </div>
+  <div class="alert alert-warning alert-dismissible hidden fade in" id="alert-warning" role="alert">
+    <button type="button" class="close" data-dimiss="alert">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4>Oh Snap!</h4>
+    <span>Email used by you has already signed the petition.</span>
+  </div>
+
 </div>
-  <!-- <script type="text/javascript" src=""></script> -->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/site.js')}}"></script>
 </body>
 </html>

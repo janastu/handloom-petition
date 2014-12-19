@@ -5,6 +5,8 @@ from flask import make_response
 from flask import jsonify
 from pymongo import MongoClient
 import config as conf
+from json import dumps
+
 
 app = Flask(__name__)
 
@@ -34,6 +36,32 @@ def signPetition():
                     "code": 0}
     dbClient.disconnect()
     return jsonify(response)
+
+
+@app.route("/users", methods=["GET"])
+def getUsers():
+    dbClient = MongoClient()
+    db = dbClient[conf.DB]
+    siteContent = db['content']
+    skip = conf.NUMBER_OF_ITEMS * (int(request.args['page']) - 1)
+    result = []
+    for content in siteContent.find().skip(skip).limit(conf.NUMBER_OF_ITEMS):
+        del(content['_id'])
+        result.append(content)
+    response = make_response()
+    response.data = dumps(result)
+    dbClient.disconnect()
+    return response
+
+
+@app.route("/count", methods=['GET'])
+def getUserCount():
+    dbClient = MongoClient()
+    db = dbClient[conf.DB]
+    siteContent = db['content']
+    count = siteContent.count()
+    dbClient.disconnect()
+    return jsonify({"count": count})
 
 if __name__ == "__main__":
     app.run(host=conf.HOST, port=conf.PORT, debug=True)
